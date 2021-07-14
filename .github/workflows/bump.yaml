@@ -1,0 +1,20 @@
+name: Bump
+
+on:
+  workflow_dispatch:
+  # schedule:
+  #   - cron: "0 13 * * *" # daily, 9 est
+
+jobs:
+  formulae:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Bump formulae
+        uses: dawidd6/action-homebrew-bump-formula@master
+        continue-on-error: true
+        with:
+          livecheck: true
+          force: true
+          tap: ${{ github.repository }}
+          token: ${{ secrets.GH_PAT }}
