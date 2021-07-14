@@ -6,6 +6,11 @@ class Pulsarctl < Formula
     revision: "1830f24c845f1a4a2298acf114a32e922fc3e374"
   license "Apache-2.0"
 
+  bottle do
+    root_url "https://github.com/branchvincent/homebrew-tap/releases/download/pulsarctl-202107030819"
+    sha256 cellar: :any_skip_relocation, catalina: "48c62edc04df0e59d0aac46423b3403a2b5f03a31e16b6bddcb0f20f283ac22b"
+  end
+
   depends_on "go" => :build
 
   # Update github.com/spf13/cobra for fish completions
