@@ -16,7 +16,7 @@ jobs:
         uses: Homebrew/actions/git-user-config@master
 
       - name: Pull bottles
-        run: brew pr-pull --debug --tap=$GITHUB_REPOSITORY ${{ github.event.pull_request.number }}
+        run: brew pr-pull --debug --tap=$GITHUB_REPOSITORY --workflows=ci.yaml ${{ github.event.pull_request.number }}
         env:
           HOMEBREW_GITHUB_API_TOKEN: ${{ github.token }}
 
