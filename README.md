@@ -1,5 +1,7 @@
 # Homebrew Tap
 
+[![CI](https://github.com/branchvincent/homebrew-tap/actions/workflows/ci.yaml/badge.svg)](https://github.com/branchvincent/homebrew-tap/actions/workflows/ci.yaml)
+
 ## Installation
 
 ```sh
