@@ -8,7 +8,8 @@ class Pulsarctl < Formula
 
   bottle do
     root_url "https://github.com/branchvincent/homebrew-tap/releases/download/pulsarctl-202107030819"
-    sha256 cellar: :any_skip_relocation, catalina: "48c62edc04df0e59d0aac46423b3403a2b5f03a31e16b6bddcb0f20f283ac22b"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, catalina: "228ef439cc97abbccf9b2a24fd1375a1e13b4ebb2f9b6f043f1352a7aa71f4a3"
   end
 
   head do
