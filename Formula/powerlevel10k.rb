@@ -9,6 +9,10 @@ class Powerlevel10k < Formula
     sha256 cellar: :any_skip_relocation, catalina: "10e6544e42deb1cce0f5541de5dd95193ad482bfa506cf59e075a4e043e99fc8"
   end
 
+  head do
+    url "https://github.com/romkatv/powerlevel10k.git"
+  end
+
   depends_on "zsh"
 
   def install
