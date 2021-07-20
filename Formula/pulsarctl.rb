@@ -23,9 +23,9 @@ class Pulsarctl < Formula
     bin.install "bin/pulsarctl"
 
     # Install shell completions
-    (bash_completion/"pulsarctl").write Utils.safe_popen_read("#{bin}/pulsarctl", "completion", "bash")
-    (fish_completion/"pulsarctl.fish").write Utils.safe_popen_read("#{bin}/pulsarctl", "completion", "fish")
-    (zsh_completion/"_pulsarctl").write Utils.safe_popen_read("#{bin}/pulsarctl", "completion", "zsh")
+    (bash_completion/"pulsarctl").write Utils.safe_popen_read(bin/"pulsarctl", "completion", "bash")
+    (fish_completion/"pulsarctl.fish").write Utils.safe_popen_read(bin/"pulsarctl", "completion", "fish")
+    (zsh_completion/"_pulsarctl").write Utils.safe_popen_read(bin/"pulsarctl", "completion", "zsh")
   end
 
   test do
