@@ -6,6 +6,11 @@ class Kubectx < Formula
   license "Apache-2.0"
   head "https://github.com/ahmetb/kubectx.git"
 
+  bottle do
+    root_url "https://github.com/branchvincent/homebrew-tap/releases/download/kubectx-0.9.4"
+    sha256 cellar: :any_skip_relocation, catalina: "ba31793fe049a729da399d7e0114b74f72dbcb8309a39c4db853da17dd8a3de6"
+  end
+
   depends_on "go" => :build
 
   def install
