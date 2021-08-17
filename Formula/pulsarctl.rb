@@ -7,6 +7,11 @@ class Pulsarctl < Formula
   license "Apache-2.0"
   head "https://github.com/streamnative/pulsarctl.git"
 
+  bottle do
+    root_url "https://github.com/branchvincent/homebrew-tap/releases/download/pulsarctl-202108131436"
+    sha256 cellar: :any_skip_relocation, big_sur: "32d2abe987bb9581ef76acb2d3dc418d227546adf7319d344aecf20af6a8d9de"
+  end
+
   depends_on "go" => :build
 
   # Update github.com/spf13/cobra for fish completions
