@@ -2,16 +2,10 @@ class Pulsarctl < Formula
   desc "CLI for Apache Pulsar written in Go"
   homepage "https://streamnative.io/"
   url "https://github.com/streamnative/pulsarctl.git",
-    tag:      "v2.9.0-rc-202107030819",
-    revision: "1830f24c845f1a4a2298acf114a32e922fc3e374"
+    tag:      "v2.9.0-rc-202108131436",
+    revision: "1d6cc581e4b4e335122c98c63a08795022bbc25a"
   license "Apache-2.0"
   head "https://github.com/streamnative/pulsarctl.git"
-
-  bottle do
-    root_url "https://github.com/branchvincent/homebrew-tap/releases/download/pulsarctl-202107030819"
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, catalina: "228ef439cc97abbccf9b2a24fd1375a1e13b4ebb2f9b6f043f1352a7aa71f4a3"
-  end
 
   depends_on "go" => :build
 
