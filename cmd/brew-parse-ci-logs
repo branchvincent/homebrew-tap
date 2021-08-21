@@ -1,0 +1,90 @@
+#!/usr/bin/env python3
+
+import re
+from functools import partial
+from pathlib import Path
+from sys import stderr
+from typing import Any
+
+Error = dict[str, Any]
+
+ANSI_RE = re.compile(r"\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])")
+DATETIME_RE = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{7}Z ")
+TESTS_RE = re.compile(
+    r"==> Running Formulae#\S+(?P<results>.*?)Error: \d+ failed steps?!", re.DOTALL
+)
+ERRORS_RE = re.compile(
+    r"==> brew (?P<cmd>[a-z- ]+)\n==> FAILED\n(?P<results>.*?)\n==> brew [a-z- ]+",
+    re.DOTALL,
+)
+
+log = partial(print, file=stderr)
+
+
+def strip_leading_timestamps(contents: str) -> str:
+    return "\n".join(DATETIME_RE.sub("", l) for l in contents.splitlines())
+
+
+def strip_ansi_escape_sequences(contents: str) -> str:
+    return "\n".join(ANSI_RE.sub("", l) for l in contents.splitlines())
+
+
+def extract_test_results(contents: str) -> str:
+    if not (match := TESTS_RE.search(contents)):
+        log("WARNING: Found 0 errors")
+        return ""
+    return match.group("results")
+
+
+def find_errors(contents: str) -> dict[str, Error]:
+    parsed = {}
+    for (cmd, results) in ERRORS_RE.findall(contents):
+        if cmd in results:
+            log("Found dupe!!")
+        parsed[cmd] = {
+            "type": cmd.split(" ")[0],
+            "formula": cmd.split(" ")[-1],
+            "step": cmd,
+            "log": results,
+        }
+    return parsed
+
+
+def format_as_markdown(errors: dict[str, Error]) -> str:
+    md = ""
+    for err in errors.values():
+        md += f"## {err['formula']} ({', '.join(err['runners'])})\n"
+        md += f"""
+<details>
+    <summary>Log</summary>
+
+```
+{err['log']}
+```
+</details>\n
+"""
+    return md
+
+
+if __name__ == "__main__":
+    from argparse import ArgumentParser
+
+    parser = ArgumentParser(description="Summarize logs")
+    parser.add_argument("dir", type=Path, help="directory containing logs")
+
+    args = parser.parse_args()
+    errors_by_cmd = {}
+    for f in sorted(args.dir.glob("*_tests (*).txt")):
+        runner = f.name[1:].lstrip("_tests (").rstrip(").txt")
+        log(f"Parsing logs from runner {runner}...")
+        contents = f.read_text()
+        contents = strip_leading_timestamps(contents)
+        contents = strip_ansi_escape_sequences(contents)
+        contents = extract_test_results(contents)
+        for cmd, error in find_errors(contents).items():
+            if cmd not in errors_by_cmd:
+                errors_by_cmd[cmd] = {**error, "runners": {runner}}
+            else:
+                errors_by_cmd[cmd]["runners"].add(runner)
+    md = format_as_markdown(errors_by_cmd)
+    print(md)
