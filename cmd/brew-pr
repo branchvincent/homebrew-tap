@@ -4,21 +4,31 @@ set -euo pipefail
 
 # Parse args
 items=()
-args=(-q)
-for i in "$@"; do
-    shift
-    if [[ "$i" == "--" ]]; then
+args=()
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+    --)
+        shift
         args=("$@")
         break
-    fi
-    items+=("$i")
+        ;;
+    -n | --dry-run) dry=1 ;;
+    *) items+=("$1") ;;
+    esac
+    shift
 done
 
-# Create PR's
+# If dry run, print updatable packages
+if [ -n "${dry:-}" ]; then
+    brew livecheck -q --newer-only "${items:---installed}"
+    exit 0
+fi
+
+# Otherwise, create PR's
 for name in "${items[@]}"; do
     details=$(brew livecheck -q "$name" --json | jq -r '.[0] | select(.version.outdated==true) | to_entries')
     type=$(echo "$details" | jq -r '.[0].key')
     version=$(echo "$details" | jq -r '.[1].value.latest')
     [[ -z "$version" ]] && echo "WARNING: $name is up to date" && continue
-    brew bump-"$type"-pr "$name" --version="$version" "${args[@]:-}"
+    brew bump-"$type"-pr "$name" --version="$version" "${args[@]:--q}"
 done
