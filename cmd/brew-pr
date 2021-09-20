@@ -24,6 +24,10 @@ if [ -n "${dry:-}" ]; then
     exit 0
 fi
 
+# HACK: brew filters this out, but we need it to sign our commit
+export GNUPGHOME=~/.local/share/gnupg
+export HOMEBREW_NO_ENV_FILTERING=1
+
 # Otherwise, create PR's
 for name in "${items[@]}"; do
     details=$(brew livecheck -q "$name" --json | jq -r '.[0] | select(.version.outdated==true) | to_entries')
