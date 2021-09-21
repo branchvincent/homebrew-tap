@@ -28,11 +28,14 @@ fi
 export GNUPGHOME=~/.local/share/gnupg
 export HOMEBREW_NO_ENV_FILTERING=1
 
-# Otherwise, create PR's
 for name in "${items[@]}"; do
+    # Get new version
     details=$(brew livecheck -q "$name" --json | jq -r '.[0] | select(.version.outdated==true) | to_entries')
     type=$(echo "$details" | jq -r '.[0].key')
     version=$(echo "$details" | jq -r '.[1].value.latest')
     [[ -z "$version" ]] && echo "WARNING: $name is up to date" && continue
+
+    # Open PR
     brew bump-"$type"-pr "$name" --version="$version" "${args[@]:--q}"
+    git -C "$(brew --repo homebrew/core)" branch -D bump-"$name"-"$version"
 done
