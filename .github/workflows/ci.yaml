@@ -13,12 +13,23 @@ jobs:
   test:
     strategy:
       matrix:
-        os: [macos-11]
+        os: [macos-11, ubuntu-latest]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Set up Homebrew
         id: set-up-homebrew
         uses: Homebrew/actions/setup-homebrew@master
+
+      - name: Force homebrew/core on Linux
+        if: runner.os == 'Linux'
+        run: |
+          echo 'HOMEBREW_FORCE_HOMEBREW_ON_LINUX=1' >> $GITHUB_ENV
+          cd "$(brew --repo homebrew/core)"
+          git remote set-url origin https://github.com/Homebrew/homebrew-core
+          git fetch origin
+          git remote set-head origin --auto
+          git checkout --force -B master FETCH_HEAD
+          brew update
 
       - name: Cache Homebrew Bundler RubyGems
         id: cache
