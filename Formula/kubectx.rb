@@ -8,7 +8,9 @@ class Kubectx < Formula
 
   bottle do
     root_url "https://github.com/branchvincent/homebrew-tap/releases/download/kubectx-0.9.4"
-    sha256 cellar: :any_skip_relocation, catalina: "ba31793fe049a729da399d7e0114b74f72dbcb8309a39c4db853da17dd8a3de6"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, big_sur:      "34f6653176491b5d44935aabb89f42d4369daa0dbadfe338cd1176d320430d81"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "a2e1e506a4edc64cfb270482b3425d74a460d7a64e8198cc4968ab8b620f0231"
   end
 
   depends_on "go" => :build
