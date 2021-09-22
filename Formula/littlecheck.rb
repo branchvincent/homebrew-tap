@@ -1,5 +1,5 @@
 class Littlecheck < Formula
-  include Language::Python::Virtualenv
+  include Language::Python::Shebang
 
   desc "Command-line tool tester"
   homepage "https://github.com/ridiculousfish/littlecheck"
@@ -15,17 +15,8 @@ class Littlecheck < Formula
   depends_on "python@3.9"
 
   def install
-    (buildpath/"setup.py").write <<~PYTHON
-      from setuptools import setup
-
-      setup(
-          name="littecheck",
-          packages=("littlecheck",),
-          entry_points={"console_scripts": ["littlecheck=littlecheck:main"]},
-      )
-    PYTHON
-
-    virtualenv_install_with_resources
+    rewrite_shebang detected_python_shebang, "littlecheck/littlecheck.py"
+    bin.install "littlecheck/littlecheck.py" => "littlecheck"
   end
 
   test do
