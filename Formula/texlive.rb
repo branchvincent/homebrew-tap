@@ -6,6 +6,12 @@ class Texlive < Formula
   license :public_domain
   head "https://github.com/TeX-Live/texlive-source.git", branch: "trunk"
 
+  bottle do
+    root_url "https://github.com/branchvincent/homebrew-tap/releases/download/texlive-58837"
+    sha256 big_sur:      "708bc3d5251e358bb75cfc955dabf0e1ec892d73d0c2b5c63a5118cf05e95db5"
+    sha256 x86_64_linux: "7ec785c21f1680dcc6d78f9f5119444d565359df5474cf6079b1bd3622822d64"
+  end
+
   depends_on "cairo"
   depends_on "clisp"
   depends_on "fontconfig"
