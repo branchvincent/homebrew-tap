@@ -12,21 +12,21 @@ class Kubectx < Formula
   end
 
   depends_on "go" => :build
+  depends_on "kubernetes-cli" => :test
 
   def install
-    system "go", "build", *std_go_args, "-o", bin/"kubectx", "./cmd/kubectx"
-    system "go", "build", *std_go_args, "-o", bin/"kubens", "./cmd/kubens"
-
-    bash_completion.install "completion/kubectx.bash" => "kubectx"
-    bash_completion.install "completion/kubens.bash" => "kubens"
-    zsh_completion.install "completion/kubectx.zsh" => "_kubectx"
-    zsh_completion.install "completion/kubens.zsh" => "_kubens"
-    fish_completion.install "completion/kubectx.fish"
-    fish_completion.install "completion/kubens.fish"
+    %w[kubectx kubens].each do |cmd|
+      system "go", "build", *std_go_args(ldflags: "-s -w"), "-o", bin/cmd, "./cmd/#{cmd}"
+      bash_completion.install "completion/#{cmd}.bash" => cmd.to_s
+      zsh_completion.install "completion/#{cmd}.zsh" => "_#{cmd}"
+      fish_completion.install "completion/#{cmd}.fish"
+    end
   end
 
   test do
-    assert_match "USAGE:", shell_output(bin/"kubectx -h 2>&1")
-    assert_match "USAGE:", shell_output(bin/"kubens -h 2>&1")
+    system "kubectl", "config", "set-context", "my-context", "--namespace=my-namespace"
+    system "kubectl", "config", "use-context", "my-context"
+    assert_match "my-context", shell_output(bin/"kubectx --current")
+    assert_match "my-namespace", shell_output(bin/"kubens --current")
   end
 end
