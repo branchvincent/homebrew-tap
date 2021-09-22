@@ -9,7 +9,8 @@ class Littlecheck < Formula
 
   bottle do
     root_url "https://github.com/branchvincent/homebrew-tap/releases/download/littlecheck-38"
-    sha256 cellar: :any_skip_relocation, catalina: "48ae757282649cbe2ef6775fcc421ce58746f3f529ac50c6a0c00341bfc0f7f7"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, big_sur: "955aac2ff5b92d21d67596dd320b7cfe7da1698ce810b380f0171bbb1206ed62"
   end
 
   depends_on "python@3.9"
