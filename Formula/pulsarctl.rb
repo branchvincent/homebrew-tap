@@ -2,10 +2,16 @@ class Pulsarctl < Formula
   desc "CLI for Apache Pulsar written in Go"
   homepage "https://streamnative.io/"
   url "https://github.com/streamnative/pulsarctl.git",
-    tag:      "v2.9.0-rc-202108131436",
-    revision: "1d6cc581e4b4e335122c98c63a08795022bbc25a"
+    tag:      "v2.9.0.0-rc-6",
+    revision: "afd2f4069fb2e518ce0adbe991a1352250391a6b"
+  version "2.9.0.0-rc-6"
   license "Apache-2.0"
-  head "https://github.com/streamnative/pulsarctl.git"
+  head "https://github.com/streamnative/pulsarctl.git", branch: "master"
+
+  livecheck do
+    url :head
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+  end
 
   bottle do
     root_url "https://github.com/branchvincent/homebrew-tap/releases/download/pulsarctl-202108131436"
@@ -14,12 +20,22 @@ class Pulsarctl < Formula
 
   depends_on "go" => :build
 
-  # Update github.com/spf13/cobra for fish completions
+  # Remove custom completion command
   patch :DATA
 
   def install
-    system "make", "pulsarctl"
-    bin.install "bin/pulsarctl"
+    # HACK: Update github.com/spf13/cobra for fish completions
+    system "go get -u github.com/spf13/cobra@v1.2.1 && go mod tidy"
+
+    ldflags = %W[
+      -s -w
+      -X github.com/streamnative/pulsarctl/pkg/cmdutils.ReleaseVersion=v#{version}
+      -X github.com/streamnative/pulsarctl/pkg/cmdutils.BuildTS=#{time.iso8601}
+      -X github.com/streamnative/pulsarctl/pkg/cmdutils.GitHash=#{Utils.git_head}
+      -X github.com/streamnative/pulsarctl/pkg/cmdutils.GitBranch=master
+      -X github.com/streamnative/pulsarctl/pkg/cmdutils.GoVersion=go#{Formula["go"].version}
+    ].join(" ")
+    system "go", "build", *std_go_args(ldflags: ldflags)
 
     # Install shell completions
     (bash_completion/"pulsarctl").write Utils.safe_popen_read(bin/"pulsarctl", "completion", "bash")
@@ -28,23 +44,11 @@ class Pulsarctl < Formula
   end
 
   test do
-    out = shell_output("#{bin}/pulsarctl 2>&1")
-    assert_match "a CLI for Apache Pulsar", out
+    assert_match version.to_s, shell_output(bin/"pulsarctl --version")
+    assert_match "a CLI for Apache Pulsar", shell_output(bin/"pulsarctl 2>&1")
   end
 end
 __END__
-diff --git a/Makefile b/Makefile
-index b735079..0925600 100644
---- a/Makefile
-+++ b/Makefile
-@@ -27,4 +27,6 @@ cli: cleancli
- 	mv ${PWD}/site/gen-pulsarctldocs/generators/pulsarctl-site-${VERSION}.tar.gz ${PWD}/pulsarctl-site-${VERSION}.tar.gz
- 
- pulsarctl: 
-+	$(GO) get -u github.com/spf13/cobra@v1.2.1
-+	$(GO) mod tidy
- 	$(GOBUILD) -ldflags '$(LDFLAGS)' -o bin/pulsarctl
-\ No newline at end of file
 diff --git a/pkg/pulsarctl.go b/pkg/pulsarctl.go
 index bef3c97..38acd2a 100644
 --- a/pkg/pulsarctl.go
@@ -58,7 +62,7 @@ index bef3c97..38acd2a 100644
  	"github.com/streamnative/pulsarctl/pkg/ctl/functionsworker"
  	"github.com/streamnative/pulsarctl/pkg/ctl/namespace"
 @@ -114,7 +113,6 @@ func NewPulsarctlCmd() *cobra.Command {
- 
+
  	rootCmd.AddCommand(cluster.Command(flagGrouping))
  	rootCmd.AddCommand(tenant.Command(flagGrouping))
 -	rootCmd.AddCommand(completion.Command(rootCmd))
