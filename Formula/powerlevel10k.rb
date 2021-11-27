@@ -3,7 +3,7 @@ class Powerlevel10k < Formula
   homepage "https://github.com/romkatv/powerlevel10k"
   url "https://github.com/romkatv/powerlevel10k/archive/v1.15.0.tar.gz"
   sha256 "3482ae9b876890b78dd2567066cf5ceecd37eb2117c12248106710655a7dc1dc"
-  head "https://github.com/romkatv/powerlevel10k.git"
+  head "https://github.com/romkatv/powerlevel10k.git", branch: "master"
 
   bottle do
     root_url "https://github.com/branchvincent/homebrew-tap/releases/download/powerlevel10k-1.15.0"
