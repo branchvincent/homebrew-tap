@@ -4,7 +4,7 @@ class Kubectx < Formula
   url "https://github.com/ahmetb/kubectx/archive/v0.9.4.tar.gz"
   sha256 "91e6b2e0501bc581f006322d621adad928ea3bd3d8df6612334804b93efd258c"
   license "Apache-2.0"
-  head "https://github.com/ahmetb/kubectx.git"
+  head "https://github.com/ahmetb/kubectx.git", branch: "master"
 
   bottle do
     root_url "https://github.com/branchvincent/homebrew-tap/releases/download/kubectx-0.9.4"
