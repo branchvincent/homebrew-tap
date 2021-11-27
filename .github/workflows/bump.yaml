@@ -3,11 +3,11 @@ name: Bump
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 13 * * *" # daily, 9 est
+    - cron: "0 0 * * 0" # weekly
 
 jobs:
   formulae:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Bump formulae
