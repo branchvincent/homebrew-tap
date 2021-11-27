@@ -3,8 +3,9 @@ class Littlecheck < Formula
 
   desc "Command-line tool tester"
   homepage "https://github.com/ridiculousfish/littlecheck"
-  url "https://github.com/ridiculousfish/littlecheck/archive/e6d56afd8dd14d8ce69d69326353f77d09e71c38.tar.gz"
-  sha256 "514c15df1a193d377582f15b965bfa9a87ed00e718dda3d3f806f57db16bdb57"
+  url "https://github.com/ridiculousfish/littlecheck/archive/ef94a661b8bd8878f4b1136b6d1963119cf67c04.tar.gz"
+  version "0.1.1"
+  sha256 "524e76987f3cfd4e8c951b4063a7866cbbd05412457fb660ededdf9ceb70de65"
   head "https://github.com/ridiculousfish/littlecheck.git", branch: "master"
 
   bottle do
@@ -13,7 +14,7 @@ class Littlecheck < Formula
     sha256 cellar: :any_skip_relocation, big_sur: "955aac2ff5b92d21d67596dd320b7cfe7da1698ce810b380f0171bbb1206ed62"
   end
 
-  depends_on "python@3.9"
+  depends_on "python@3.10"
 
   def install
     rewrite_shebang detected_python_shebang, "littlecheck/littlecheck.py"
