@@ -9,9 +9,9 @@ class Littlecheck < Formula
   head "https://github.com/ridiculousfish/littlecheck.git", branch: "master"
 
   bottle do
-    root_url "https://github.com/branchvincent/homebrew-tap/releases/download/littlecheck-38"
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, big_sur: "955aac2ff5b92d21d67596dd320b7cfe7da1698ce810b380f0171bbb1206ed62"
+    root_url "https://github.com/branchvincent/homebrew-tap/releases/download/littlecheck-0.1.1"
+    sha256 cellar: :any_skip_relocation, big_sur:      "303c75552ffce77099957a8f6ae4bb0b26d43cb988f10d29556c40ed424f7a08"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "9bcc160474db487ba31107f614ce227e9aee627126d25b180b7b9a28704fab72"
   end
 
   depends_on "python@3.10"
