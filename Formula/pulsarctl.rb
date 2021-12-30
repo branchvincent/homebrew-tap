@@ -2,9 +2,8 @@ class Pulsarctl < Formula
   desc "CLI for Apache Pulsar written in Go"
   homepage "https://streamnative.io/"
   url "https://github.com/streamnative/pulsarctl.git",
-    tag:      "v2.9.0.0-rc-6",
-    revision: "afd2f4069fb2e518ce0adbe991a1352250391a6b"
-  version "2.9.0.0-rc-6"
+    tag:      "v2.9.1.1",
+    revision: "02ff7f47f5844d1572a31f82c8f846dff2945aee"
   license "Apache-2.0"
   head "https://github.com/streamnative/pulsarctl.git", branch: "master"
 
@@ -26,7 +25,7 @@ class Pulsarctl < Formula
 
   def install
     # HACK: Update github.com/spf13/cobra for fish completions
-    system "go get -u github.com/spf13/cobra@v1.2.1 && go mod tidy"
+    system "go get -u github.com/spf13/cobra@v1.3.0 && go mod tidy"
 
     ldflags = %W[
       -s -w
@@ -35,7 +34,7 @@ class Pulsarctl < Formula
       -X github.com/streamnative/pulsarctl/pkg/cmdutils.GitHash=#{Utils.git_head}
       -X github.com/streamnative/pulsarctl/pkg/cmdutils.GitBranch=master
       -X github.com/streamnative/pulsarctl/pkg/cmdutils.GoVersion=go#{Formula["go"].version}
-    ].join(" ")
+    ]
     system "go", "build", *std_go_args(ldflags: ldflags)
 
     # Install shell completions
