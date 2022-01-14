@@ -13,9 +13,9 @@ class Pulsarctl < Formula
   end
 
   bottle do
-    root_url "https://github.com/branchvincent/homebrew-tap/releases/download/pulsarctl-2.9.1.2"
-    sha256 cellar: :any_skip_relocation, big_sur:      "ba3b11c0bee24ac796d8d97ae51515c897c3cf559ce6babb76dd4d5d42a0e41a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "8054ca32d07928eb6398b2949144b2af26f7820cf2cd7c390f20f7e40a7c67f0"
+    root_url "https://github.com/branchvincent/homebrew-tap/releases/download/pulsarctl-2.9.1.3"
+    sha256 cellar: :any_skip_relocation, big_sur:      "e40b28be4a71c658533f5134f5a494001f01b95f0a8a25378ad47018c2f7cf7d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "8d7ae30ddabff5d75fa981351594bc721dfe4d219ff3b13a902da3ca9ccf6468"
   end
 
   depends_on "go" => :build
