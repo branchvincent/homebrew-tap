@@ -78,7 +78,7 @@ module CPAN
   end
 
   # Return true if resources were checked (even if no change).
-  sig {
+  sig do
     params(
       formula:                  Formula,
       version:                  T.nilable(String),
@@ -87,7 +87,7 @@ module CPAN
       silent:                   T.nilable(T::Boolean),
       ignore_non_cpan_packages: T.nilable(T::Boolean),
     ).returns(T.nilable(T::Boolean))
-  }
+  end
   def update_perl_resources!(formula, version: nil, package_name: nil, print_only: false, silent: false,
                              ignore_non_cpan_packages: false)
     new_resource_blocks = ""
@@ -147,7 +147,6 @@ module CPAN
     true
   end
 end
-
 
 module Homebrew
   extend T::Sig
