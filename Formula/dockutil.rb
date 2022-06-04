@@ -10,6 +10,11 @@ class Dockutil < Formula
     regex(/^v?(\d+(?:\.\d+)+)$/i)
   end
 
+  bottle do
+    root_url "https://github.com/branchvincent/homebrew-tap/releases/download/dockutil-3.0.2"
+    sha256 cellar: :any_skip_relocation, big_sur: "61896144415c4a83dfa6e393872d3973a99012b6fafa26f51e259120d10aea8a"
+  end
+
   depends_on xcode: ["12.5", :build]
   depends_on :macos
 
