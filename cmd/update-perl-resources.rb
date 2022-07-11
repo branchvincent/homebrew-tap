@@ -166,10 +166,10 @@ module Homebrew
       switch "--ignore-non-cpan-packages",
              description: "Don't fail if <formula> is not a CPAN package."
       flag   "--version=",
-             description: "Use the specified <version> when finding resources for <formula>. "\
+             description: "Use the specified <version> when finding resources for <formula>. " \
                           "If no version is specified, the current version for <formula> will be used."
       flag   "--package-name=",
-             description: "Use the specified <package-name> when finding resources for <formula>. "\
+             description: "Use the specified <package-name> when finding resources for <formula>. " \
                           "If no package name is specified, it will be inferred from the formula's stable URL."
 
       named_args :formula, min: 1
