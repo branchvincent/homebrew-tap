@@ -1,0 +1,13 @@
+#!/bin/bash
+
+set -euo pipefail
+
+url="$1"
+sha=$(curl -fsSL "$url" | shasum -a 256 | cut -d' ' -f1)
+
+cat <<EOS
+  patch do
+    url "$url"
+    sha256 "$sha"
+  end
+EOS
