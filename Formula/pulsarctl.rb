@@ -38,9 +38,7 @@ class Pulsarctl < Formula
     system "go", "build", *std_go_args(ldflags: ldflags)
 
     # Install shell completions
-    (bash_completion/"pulsarctl").write Utils.safe_popen_read(bin/"pulsarctl", "completion", "bash")
-    (fish_completion/"pulsarctl.fish").write Utils.safe_popen_read(bin/"pulsarctl", "completion", "fish")
-    (zsh_completion/"_pulsarctl").write Utils.safe_popen_read(bin/"pulsarctl", "completion", "zsh")
+    generate_completions_from_executable(bin/"pulsarctl", "completion")
   end
 
   test do
