@@ -1,9 +1,9 @@
 class Bun < Formula
   desc "Fast all-in-one JavaScript runtime"
   homepage "https://bun.sh"
-  url "https://github.com/oven-sh/bun/releases/download/bun-v0.1.11/bun-darwin-aarch64.zip"
-  version "0.1.11"
-  sha256 "475ec66b80ba3d2c5f2f56f3e88063c747581665fdde2d32f2eab11b579929de"
+  url "https://github.com/oven-sh/bun/releases/download/bun-v0.1.13/bun-darwin-aarch64.zip"
+  version "0.1.13"
+  sha256 "4584d171cf3171c466c6e28e5f05f76c15894972c8dbf5df1f8ffb65d71405d1"
   license "MIT"
 
   livecheck do
@@ -14,8 +14,8 @@ class Bun < Formula
   depends_on :macos
 
   resource "completions" do
-    url "https://github.com/oven-sh/bun/archive/bun-v0.1.11.tar.gz"
-    sha256 "e7668660b4c1608d7eb481a2a12cd7f427597c7be0a42bc8ab068ca0a3953a9e"
+    url "https://github.com/oven-sh/bun/archive/bun-v0.1.13.tar.gz"
+    sha256 "9fbf3e38860827399169364d920274a99b6cf3817ba71af7751a082cd703c9b2"
   end
 
   def install
