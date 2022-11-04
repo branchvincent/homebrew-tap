@@ -1,9 +1,9 @@
 class Bun < Formula
   desc "Fast all-in-one JavaScript runtime"
   homepage "https://bun.sh"
-  url "https://github.com/oven-sh/bun/releases/download/bun-v0.2.1/bun-darwin-aarch64.zip"
-  version "0.2.1"
-  sha256 "9f5bae71c8889ceaef7497d7c1b92af36d129a70ab0c4649cce813b59e52b567"
+  url "https://github.com/oven-sh/bun/releases/download/bun-v0.2.2/bun-darwin-aarch64.zip"
+  version "0.2.2"
+  sha256 "208cb9644c7ff92b4086d45c1aa337bafbc4aaee301b319496cd0afe8b788d12"
   license "MIT"
 
   livecheck do
@@ -13,20 +13,10 @@ class Bun < Formula
 
   depends_on :macos
 
-  resource "completions" do
-    url "https://github.com/oven-sh/bun/archive/bun-v0.2.1.tar.gz"
-    sha256 "e3aeea6f35fb4732cf27660fd08085d9355b74dbd78884e478d606b782ca60ef"
-  end
-
   def install
     bin.install "bun"
-
-    # Install shell completions
-    resource("completions").stage do
-      bash_completion.install "completions/bun.bash" => "bun"
-      zsh_completion.install "completions/bun.zsh" => "_bun"
-      fish_completion.install "completions/bun.fish"
-    end
+    ENV["BUN_INSTALL"] = bin.to_s
+    generate_completions_from_executable(bin/"bun", "completions")
   end
 
   test do
