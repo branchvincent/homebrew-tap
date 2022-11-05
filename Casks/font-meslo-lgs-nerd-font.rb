@@ -4,6 +4,7 @@ cask "font-meslo-lgs-nerd-font" do
 
   url "https://github.com/romkatv/powerlevel10k-media.git"
   name "MesloLGS Nerd Font families (Meslo LG)"
+  desc "Meslo Nerd Font patched for Powerlevel10k"
   homepage "https://github.com/romkatv/powerlevel10k-media"
 
   font "MesloLGS NF Bold Italic.ttf"
