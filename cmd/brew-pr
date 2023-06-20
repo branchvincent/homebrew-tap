@@ -24,11 +24,6 @@ if [ -n "${dry:-}" ]; then
     exit 0
 fi
 
-# HACK: brew filters out $GNUPGHOME, but we need gpg to sign our commit
-rm -rf ~/.gnupg
-cp -R ~/.local/share/gnupg ~/.gnupg 2>/dev/null
-trap "rm -rf ~/.gnupg" EXIT
-
 for name in "${items[@]}"; do
     # Get new version
     details=$(brew livecheck -q "$name" --json | jq -r '.[0] | select(.version.outdated==true) | to_entries')
