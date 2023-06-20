@@ -10,8 +10,6 @@ require "cli/parser"
 #
 # @api private
 module CPAN
-  extend T::Sig
-
   module_function
 
   METACPAN_URL_PREFIX = "https://cpan.metacpan.org/"
@@ -21,10 +19,7 @@ module CPAN
   #
   # @api private
   class Package
-    extend T::Sig
-
-    attr_accessor :name
-    attr_accessor :version
+    attr_accessor :name, :version
 
     sig { params(package_string: String, is_url: T::Boolean).void }
     def initialize(package_string, is_url: false)
@@ -78,7 +73,7 @@ module CPAN
   end
 
   # Return true if resources were checked (even if no change).
-  sig do
+  sig {
     params(
       formula:                  Formula,
       version:                  T.nilable(String),
@@ -87,7 +82,7 @@ module CPAN
       silent:                   T.nilable(T::Boolean),
       ignore_non_cpan_packages: T.nilable(T::Boolean),
     ).returns(T.nilable(T::Boolean))
-  end
+  }
   def update_perl_resources!(formula, version: nil, package_name: nil, print_only: false, silent: false,
                              ignore_non_cpan_packages: false)
     new_resource_blocks = ""
@@ -105,8 +100,8 @@ module CPAN
         odie "Unable to resolve some dependencies. Please update the resources for \"#{formula.name}\" manually."
       elsif url.blank? || checksum.blank?
         odie <<~EOS
-          Unable to find the URL and/or sha256 for the \"#{name}\" resource.
-          Please update the resources for \"#{formula.name}\" manually.
+          Unable to find the URL and/or sha256 for the "#{name}" resource.
+          Please update the resources for "#{formula.name}" manually.
         EOS
       end
 
@@ -149,8 +144,6 @@ module CPAN
 end
 
 module Homebrew
-  extend T::Sig
-
   module_function
 
   sig { returns(CLI::Parser) }
