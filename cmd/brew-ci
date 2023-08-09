@@ -1,0 +1,21 @@
+#!/bin/sh
+
+files=$(git diff --name-only HEAD -- Casks/ Formula/)
+
+if [ -z "$files" ]; then
+    echo >&2 No changes to commit!
+    exit 1
+fi
+
+# shellcheck disable=SC2086
+brew style --fix $files >/dev/null
+
+for file in $files; do
+    filename=$(basename "${file%.rb}")
+    echo Committing "$filename"
+    if [ -n "$1" ]; then
+        git commit -m "$filename: $1" -- "$file"
+    else
+        git commit --file=- -- "$file"
+    fi
+done
