@@ -51,7 +51,7 @@ module CPAN
       else
         "https://fastapi.metacpan.org/v1/download_url/#{@name}"
       end
-      out, _, status = curl_output metadata_url, "--location"
+      out, _, status = Utils::Curl.curl_output metadata_url, "--location", "--fail"
 
       return unless status.success?
 
