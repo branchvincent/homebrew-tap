@@ -1,3 +1,4 @@
 {
-  "bun": "oven-sh/bun"
+  "bun": "oven-sh/bun",
+  "powerlevel10k": "homebrew/core"
 }
