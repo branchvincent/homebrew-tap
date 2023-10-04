@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+formula="$1"
+curr="3.11"
+next="3.12"
+branch="python@$next-$formula"
+message="$formula: migrate to \`python@$next\`"
+
+# Update formula
+git checkout master
+sed -i "" "s/python@$curr/python@$next/" Formula/*/"$formula".rb
+sed -i "" "s/python$curr/python$next/" Formula/*/"$formula".rb
+brew update-python-resources "$formula" || true
+# brew bump-revision --write-only "$formula"
+
+# Stage and commit
+git add Formula/*/"$formula".rb
+git checkout --no-track -b "$branch"
+git commit --no-edit -m "$message" -- Formula/*/"$formula".rb
+
+# Create PR
+git push --set-upstream fork "$branch:$branch"
+GITHUB_TOKEN=$HOMEBREW_GITHUB_API_TOKEN gh pr create --fill --body "$message"
+GITHUB_TOKEN=$HOMEBREW_GITHUB_API_TOKEN gh pr edit --add-label "python-$next-migration"
+git checkout -q -
+git branch -D "$branch"
