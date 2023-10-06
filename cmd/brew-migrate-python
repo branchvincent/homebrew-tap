@@ -2,8 +2,14 @@
 
 set -euo pipefail
 
+if [ -z "${HOMEBREW_GITHUB_API_TOKEN:-}" ] && ! gh auth status &>/dev/null; then
+    echo "GitHub token required!"
+    echo "  export HOMEBREW_GITHUB_API_TOKEN=\$(gh auth token)"
+    exit 1
+fi
+
 formula="$1"
-curr="3.11"
+curr="${2:-3.11}"
 next="3.12"
 branch="python@$next-$formula"
 message="$formula: migrate to \`python@$next\`"
