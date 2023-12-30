@@ -1,4 +1,5 @@
 {
   "bun": "oven-sh/bun",
+  "dockutil": "homebrew/core",
   "powerlevel10k": "homebrew/core"
 }
