@@ -9,7 +9,7 @@ jobs:
   formulae:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Bump formulae
         uses: dawidd6/action-homebrew-bump-formula@master
         continue-on-error: true
