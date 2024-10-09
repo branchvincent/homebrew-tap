@@ -9,8 +9,8 @@ if [ -z "${HOMEBREW_GITHUB_API_TOKEN:-}" ] && ! gh auth status &>/dev/null; then
 fi
 
 formula="$1"
-curr="${2:-3.11}"
-next="3.12"
+curr="${2:-3.12}"
+next="3.13"
 branch="python@$next-$formula"
 message="$formula: migrate to \`python@$next\`"
 
