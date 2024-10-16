@@ -13,6 +13,14 @@ curr="${2:-3.12}"
 next="3.13"
 branch="python@$next-$formula"
 message="$formula: migrate to \`python@$next\`"
+export GITHUB_TOKEN="$HOMEBREW_GITHUB_API_TOKEN"
+
+# Check for duplicates
+duplicate=$(gh pr list --search="in:title \"$message\"" --state=all --limit=1 --json=number --jq='.[].number')
+if [ -n "$duplicate" ]; then
+    echo "Found duplicate! https://github.com/Homebrew/homebrew-core/pull/$duplicate"
+    exit 1
+fi
 
 # Update formula
 git checkout master
@@ -28,7 +36,7 @@ git commit --no-edit -m "$message" -- Formula/*/"$formula".rb
 
 # Create PR
 git push --set-upstream fork "$branch:$branch"
-GITHUB_TOKEN=$HOMEBREW_GITHUB_API_TOKEN gh pr create --fill --body "$message"
-GITHUB_TOKEN=$HOMEBREW_GITHUB_API_TOKEN gh pr edit --add-label "python-$next-migration"
+gh pr create --fill --body "$message"
+gh pr edit --add-label "python-$next-migration"
 git checkout -q -
 git branch -D "$branch"
