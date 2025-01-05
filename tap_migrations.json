@@ -1,6 +1,7 @@
 {
   "bun": "oven-sh/bun",
   "dockutil": "homebrew/core",
+  "font-meslo-lgs-nerd-font": "homebrew/cask/font-meslo-for-powerlevel10k",
   "powerlevel10k": "homebrew/core",
   "pulsarctl": "homebrew/core"
 }
