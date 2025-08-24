@@ -6,6 +6,12 @@ class Rustpython < Formula
   license "MIT"
   head "https://github.com/RustPython/RustPython.git", branch: "main"
 
+  bottle do
+    root_url "https://github.com/branchvincent/homebrew-tap/releases/download/rustpython-2025-08-18"
+    sha256 cellar: :any, arm64_sequoia: "396684926b0322f7eae17b3c9b3991f7298e1102f10440e9d47037a4e01407c3"
+    sha256               x86_64_linux:  "3d1ee5a8260c980b801fef1d9f86d0f96fb8072ac837c5d00e6a973dcd2061f4"
+  end
+
   depends_on "rust" => :build
   depends_on "openssl@3"
 
