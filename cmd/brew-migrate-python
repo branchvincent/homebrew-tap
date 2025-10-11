@@ -9,8 +9,8 @@ if [ -z "${HOMEBREW_GITHUB_API_TOKEN:-}" ] && ! gh auth status &>/dev/null; then
 fi
 
 formula="$1"
-curr="${2:-3.12}"
-next="3.13"
+next="3.14" # "$(brew which-formula python3 2>/dev/null| cut -d@ -f2)"
+curr="3.13" # $(echo "$next - 0.01" | bc)
 branch="python@$next-$formula"
 message="$formula: migrate to \`python@$next\`"
 export GITHUB_TOKEN="$HOMEBREW_GITHUB_API_TOKEN"
@@ -23,9 +23,8 @@ if [ -n "$duplicate" ]; then
 fi
 
 # Update formula
-git checkout master
-sed -i "" "s/python@$curr/python@$next/" Formula/*/"$formula".rb
-sed -i "" "s/python$curr/python$next/" Formula/*/"$formula".rb
+git checkout main
+sed -Ei "" "s/(python@?)$curr/\1$next/" Formula/*/"$formula".rb
 brew update-python-resources "$formula" || true
 # brew bump-revision --write-only "$formula"
 
