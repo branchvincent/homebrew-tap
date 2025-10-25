@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+if [ -z "${HOMEBREW_GITHUB_API_TOKEN:-}" ] && ! gh auth status &>/dev/null; then
+    echo "GitHub token required!"
+    echo "  export HOMEBREW_GITHUB_API_TOKEN=\$(gh auth token)"
+    exit 1
+fi
+export GITHUB_TOKEN="$HOMEBREW_GITHUB_API_TOKEN"
+
+RUNNERS=(
+    "14-arm64"
+    "14-x86_64"
+    "15-arm64"
+    "15-x86_64"
+    "26-arm64"
+    "26-x86_64"
+    "ubuntu-22.04-arm"
+    "ubuntu-latest"
+)
+
+PR=$1
+RUNNER1=${2:-26-arm64}
+RUNNER2=${3:-14-x86_64}
+
+if ! [[ ${RUNNERS[*]} =~ $RUNNER1 && ${RUNNERS[*]} =~ $RUNNER2 ]]; then
+  echo "Runner must be one of: ${RUNNERS[*]}"
+  exit 1
+fi
+
+COMMIT_SHA=$(gh pr view "$PR" --json=commits --jq='.commits[-1].oid')
+RUN_ID=$(gh run list --commit="$COMMIT_SHA" --workflow=CI --event=pull_request --limit=1 --json=databaseId --jq='.[0].databaseId')
+
+TEMP_DIR="$TMPDIR/pr-$PR-run-$RUN_ID-bottles"
+if ! [ -d "$TEMP_DIR" ]; then
+    echo "Downloading bottles to $TEMP_DIR"
+    mkdir "$TEMP_DIR"
+    gh run download --dir="$TEMP_DIR" --pattern='bottles_*' "$RUN_ID"
+fi
+
+echo "Diffing bottles in $TEMP_DIR"
+diffoscope "$TEMP_DIR"/bottles_"$RUNNER1"*/*.bottle*.tar.gz "$TEMP_DIR"/bottles_"$RUNNER2"*/*.bottle*.tar.gz
