@@ -2,37 +2,25 @@
 
 set -euo pipefail
 
-# Parse args
-items=()
-args=()
-while [[ $# -gt 0 ]]; do
-    case "$1" in
-    --)
-        shift
-        args=("$@")
-        break
-        ;;
-    -n | --dry-run) dry=1 ;;
-    *) items+=("$1") ;;
-    esac
-    shift
-done
+msg=$1
+files=$(git diff --name-only --cached)
+[ -n "$files" ] || files=$(git diff --name-only)
+branch=$(basename "${files%.rb}")
 
-# If dry run, print updatable packages
-if [ -n "${dry:-}" ]; then
-    brew livecheck -q --newer-only "${items:---installed}"
-    exit 0
+if [ -z "${HOMEBREW_GITHUB_API_TOKEN:-}" ] && ! gh auth status &>/dev/null; then
+    echo "GitHub token required!"
+    echo "  export HOMEBREW_GITHUB_API_TOKEN=\$(gh auth token)"
+    exit 1
 fi
 
-for name in "${items[@]}"; do
-    # Get new version
-    details=$(brew livecheck -q "$name" --json | jq -r '.[0] | select(.version.outdated==true) | to_entries')
-    type=$(echo "$details" | jq -r '.[0].key')
-    version=$(echo "$details" | jq -r '.[1].value.latest')
-    [[ -z "$version" ]] && echo "WARNING: $name is up to date" && continue
+export GITHUB_TOKEN="$HOMEBREW_GITHUB_API_TOKEN" EDITOR="$HOMEBREW_EDITOR"
 
-    # Open PR
-    brew bump-"$type"-pr "$name" --version="$version" "${args[@]:--q}"
-    tap=$([[ "$type" == "formula" ]] && echo "core" || echo "cask")
-    git -C "$(brew --repo homebrew/"$tap")" branch -D bump-"$name"-"$version"
+git checkout -b "$branch"
+
+for file in $files; do
+    formula=$(basename "${file%.rb}")
+    git commit -m "$formula: $msg" -- "$file"
 done
+
+gh pr create --web
+git switch -
