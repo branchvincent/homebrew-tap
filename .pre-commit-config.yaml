@@ -1,0 +1,8 @@
+repos:
+  - repo: local
+    hooks:
+      - id: brew-style
+        name: brew style
+        entry: brew style --fix
+        language: unsupported
+        types: [ruby]
