@@ -8,27 +8,11 @@ if [ -z "${HOMEBREW_GITHUB_API_TOKEN:-}" ] && ! gh auth status &>/dev/null; then
     exit 1
 fi
 export GITHUB_TOKEN="$HOMEBREW_GITHUB_API_TOKEN"
-
-RUNNERS=(
-    "14-arm64"
-    "14-x86_64"
-    "15-arm64"
-    "15-x86_64"
-    "26-arm64"
-    "26-x86_64"
-    "ubuntu-22.04-arm"
-    "ubuntu-latest"
-)
+export GH_REPO="Homebrew/homebrew-core"
+command -v diffoscope >/dev/null || brew install diffoscope
+command -v gum >/dev/null || brew install gum
 
 PR=$1
-RUNNER1=${2:-26-arm64}
-RUNNER2=${3:-14-x86_64}
-
-if ! [[ ${RUNNERS[*]} =~ $RUNNER1 && ${RUNNERS[*]} =~ $RUNNER2 ]]; then
-  echo "Runner must be one of: ${RUNNERS[*]}"
-  exit 1
-fi
-
 COMMIT_SHA=$(gh pr view "$PR" --json=commits --jq='.commits[-1].oid')
 RUN_ID=$(gh run list --commit="$COMMIT_SHA" --workflow=CI --event=pull_request --limit=1 --json=databaseId --jq='.[0].databaseId')
 
@@ -39,5 +23,8 @@ if ! [ -d "$TEMP_DIR" ]; then
     gh run download --dir="$TEMP_DIR" --pattern='bottles_*' "$RUN_ID"
 fi
 
+RUNNERS=$(basename "$TEMP_DIR"/bottles_*/*.bottle.tar.gz | gum choose --limit=2 --output-delimiter=$'\t')
+IFS=$'\t' read -r -a RUNNERS <<<"$RUNNERS"
+
 echo "Diffing bottles in $TEMP_DIR"
-diffoscope "$TEMP_DIR"/bottles_"$RUNNER1"*/*.bottle*.tar.gz "$TEMP_DIR"/bottles_"$RUNNER2"*/*.bottle*.tar.gz
+diffoscope "$TEMP_DIR"/bottles_*/"${RUNNERS[0]}" "$TEMP_DIR"/bottles_*/"${RUNNERS[1]}"
