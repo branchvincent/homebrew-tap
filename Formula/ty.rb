@@ -7,6 +7,12 @@ class Ty < Formula
   license "MIT"
   head "https://github.com/astral-sh/ty.git", branch: "main"
 
+  bottle do
+    root_url "https://github.com/branchv/homebrew-tap/releases/download/ty-0.0.1-alpha.33"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "21d415f2a24db3271c9a428fbd7fdce3810c16e6f062963bfb4610f3a37d052e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "44ab6578af54084aeaf16e3e6ea385244c2efe16f40f33cdfb87e7d12935e72e"
+  end
+
   depends_on "rust" => :build
 
   def install
