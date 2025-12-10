@@ -7,7 +7,7 @@ class ZshFzfTab < Formula
   head "https://github.com/Aloxaf/fzf-tab.git", branch: "master"
 
   bottle do
-    root_url "https://github.com/branchvincent/homebrew-tap/releases/download/zsh-fzf-tab-0.2.2"
+    root_url "https://github.com/branchv/homebrew-tap/releases/download/zsh-fzf-tab-0.2.2"
     sha256 cellar: :any_skip_relocation, big_sur:      "25db53134b79dc85c4f0c8bd2f483f0eedb965e0a1a479c3aba21f0eb4e00a39"
     sha256 cellar: :any_skip_relocation, x86_64_linux: "bc3ede7c899d636c6cdab1d927dacae9af1649c4e2d9d017f7babb9101f8548f"
   end
