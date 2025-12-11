@@ -7,6 +7,10 @@ class Ty < Formula
   license "MIT"
   head "https://github.com/astral-sh/ty.git", branch: "main"
 
+  livecheck do
+    url :stable
+  end
+
   bottle do
     root_url "https://github.com/branchv/homebrew-tap/releases/download/ty-0.0.1-alpha.33"
     sha256 cellar: :any_skip_relocation, arm64_sequoia: "21d415f2a24db3271c9a428fbd7fdce3810c16e6f062963bfb4610f3a37d052e"
