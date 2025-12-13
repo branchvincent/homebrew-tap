@@ -2,8 +2,8 @@ class Ty < Formula
   desc "Extremely fast Python type checker and language server"
   homepage "https://docs.astral.sh/ty/"
   url "https://github.com/astral-sh/ty.git",
-    tag:      "0.0.1-alpha.33",
-    revision: "35e23aa481211acfc35dd7ff9f1a0be384f4fab7"
+    tag:      "0.0.1-alpha.34",
+    revision: "ef3d48ac4a72a9e7831419542b440c5bcec5623d"
   license "MIT"
   head "https://github.com/astral-sh/ty.git", branch: "main"
 
