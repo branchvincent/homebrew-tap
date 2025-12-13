@@ -12,9 +12,9 @@ class Ty < Formula
   end
 
   bottle do
-    root_url "https://github.com/branchv/homebrew-tap/releases/download/ty-0.0.1-alpha.33"
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "21d415f2a24db3271c9a428fbd7fdce3810c16e6f062963bfb4610f3a37d052e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "44ab6578af54084aeaf16e3e6ea385244c2efe16f40f33cdfb87e7d12935e72e"
+    root_url "https://github.com/branchv/homebrew-tap/releases/download/ty-0.0.1-alpha.34"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "7f31246127a7820702ef43f440690e6e9f94d5d90c9e2af3bbd74bb6f4aea6a5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "952911be476fb236712dc4b122c57a4a78c8482c975569e741c3eb90b185dcf9"
   end
 
   depends_on "rust" => :build
